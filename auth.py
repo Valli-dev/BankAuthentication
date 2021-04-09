@@ -11,18 +11,19 @@ userDatabase={1111111111: ['Seyi','Onifade','seyionifade@zuriteam.com', 'Passwor
 
 
 def init():
-    print("******************* WELCOME TO BANK PHP **********************")
-    
-    haveaccount= int(input("Do you have account with us? 1 (Yes) 2 (No) 3(exit)\n"))
-    if (haveaccount == 1):
-        login()
-    elif(haveaccount ==2):
-        register()
-    elif(haveaccount==3):
-        exit()
-    else:
-        print("please enter a valid option")
-        init()
+
+        print("******************* WELCOME TO BANK PHP **********************")
+    #while(op = False):
+        haveaccount= int(input("Do you have account with us? 1 (Yes) 2 (No) 3(exit)\n"))
+        if (haveaccount == 1):
+            login()
+        elif(haveaccount ==2):
+            register()
+        elif(haveaccount==3):
+            exit()
+        else:
+            print("please enter a valid option")
+            init()
 
 
 #register
@@ -88,17 +89,29 @@ def login():
 
 def bankOperation(user):
 
-    print("************** Welcome %s %s ****************\n1 " %(user[0], user[1]))
+        print("************** Welcome %s %s ****************\n" %(user[0], user[1]))
     
-    selectedOption= int(input(" What would you like to do?\n Bank operations:\n 1. Withdrawal\n 2. Cash Deposit\n 3. logout Account \n 4. Exit Bank operations\n "))
-    while(selectedOption == 4):
+        selectedOption= int(input(" What would you like to do?\n Bank operations:\n 1. Withdrawal\n 2. Cash Deposit\n 3. logout Account \n 4. Exit Bank operations\n "))
+    #while(selectedOption !=4):
+
         if (selectedOption == 1):
             print("\nWithdrawal function")
             withdrawOperation()
+            op=input("would you like another operation(y/n)")
+            if (op=='y'):
+                bankOperation(user)
+            else:
+                exit()
    
         elif(selectedOption == 2):
             print("\nDeposit function")
             depositOperation()
+            op=input("would you like another operation(y/n)")
+            if (op=='y'):
+                bankOperation(user)
+            else:
+                exit()
+            
 
         elif(selectedOption == 3):
             print("Logging OUT of your account!")
@@ -113,11 +126,17 @@ def bankOperation(user):
 
 
 
+    
+
+
+
 
 
 def withdrawOperation():
     Amount= int(input("How much do you want to withdraw?\n"))
     print("Take your cash!!!")
+    
+
     
 
 def depositOperation():
