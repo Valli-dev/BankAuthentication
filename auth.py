@@ -1,100 +1,128 @@
-#login
-  #(username or email) , password
-
-#register
-  # username , email, password
-  # generate accountnumber
-
-#bank operations
+import random
+import datetime
 
 ## Initialze the system
 
 
-import random
-database= {}
+userDatabase={1111111111: ['Seyi','Onifade','seyionifade@zuriteam.com', 'PasswordSeyi'],
+              2222222222:["Mike", "Koss", "mikekoss@zuriteam.com", "PasswordMike"],
+              3333333333:["Valli","mayil","vallimayil@gmail.com","PasswordMayil"]}
+
+
 
 def init():
-    isValidOption= False
-    validList=[1,2]
     print("******************* WELCOME TO BANK PHP **********************")
+    
+    haveaccount= int(input("Do you have account with us? 1 (Yes) 2 (No) 3(exit)\n"))
+    if (haveaccount == 1):
+        login()
+    elif(haveaccount ==2):
+        register()
+    elif(haveaccount==3):
+        exit()
+    else:
+        print("please enter a valid option")
+        init()
 
-    while(isValidOption==False):
-        haveaccount= int(input("Do you have account with us? 1 (Yes) 2 (No)\n"))
-        if (haveaccount == 1):
-            isValidOption = True
-            login()
-        elif(haveaccount ==2):
-            isValidOption = True
-            register()
-        elif(haveaccount not in validList):
-            print("please enter valid option")
+
+#register
+  # input username , email, password
+
+  # generate accountnumber
 
 def register():
-    print("********* New User Registration: ********** \n")
+    print("********* New Account opening Registration: ********** \n")
     
     firstName = input("Enter your first name: \n")
     lastName = input("Enter your Last name: \n")
     email = input("Enter your email address: \n")
     password = input("Please create your password:\n")
     accountNumber = generateAccountNumber()
-
-    database[accountNumber]=[firstName, lastName, email, password]
-    #print(database)
-    print("Your Account has been created successfully")
+    
+    userDatabase[accountNumber]=[firstName, lastName, email, password]
+    #print("\n" , userDatabase.items())
+    
+    print("\nYour Account has been created successfully")
 
     print("**************Login details********************\n")
     print("Your account number is ",accountNumber)
     print("Make sure to keep it safe\n")
     print("************************************************\n")
 
-    print("Login to your Account\n")
-    login()
+    choice= input("Would you like to login to your account?(y/n)\n")
+    if(choice=='y'): login()
+    else: init()
+
+
+#login
+#(username or email) , password
+# go to bank operations
 
 def login():
-    print("\nThis is the login function\n")
-    isLoginSuccessful=False
-    while (isLoginSuccessful== False):
-        accountNumberFromUser = int(input("\nWhat is your Account Number?\n"))
-        password = input("\nWhat is your password?\n")
+    
+    flag=0
+    x= datetime.datetime.now()
 
-        for accountNumber,userDetails in database.items():
-            if (accountNumber==accountNumberFromUser and userDetails[3]==password):
-                isLoginSuccessful=True
-                print("**************Login successful***************")
-                bankOperation(userDetails)
-            else:
-                print("invalid account or password, Try again")
-        
+    accountNumberFromUser = int(input("\nWhat is your Account Number?\n"))
+    password = input("\nWhat is your password?\n")
+
+    for accountNumber,userDetails in userDatabase.items():
+        if (accountNumber==accountNumberFromUser and userDetails[3]==password) :               
+            flag=1
+            print("**************Login successful*************** @ " , x)
+            bankOperation(userDetails)
+    
+    
+    if (flag==0):
+        print("Invalid account or password")
+        op=input("Would you like to continue y/n?\n")
+        if (op=='y'): login()
+        else: 
+            print("Quit\n")
+            exit()
+
+
+
+
+#bank operations
+
 def bankOperation(user):
 
-    print("Welcome to Bank Operations %s %s" %(user[0], user[1]))
-    selectedOption= int(input(" What would you like to do?\n Bank operations:\n 1. Withdrawal\n 2. Deposit\n 3. logout\n 4. Exit Bank operations\n "))
-    if (selectedOption == 1):
-        print("withdrawal function")
-        withdrawOperation()
-        
-    elif(selectedOption == 2):
-        print("deposit function")
-        depositOperation()
+    print("************** Welcome %s %s ****************\n1 " %(user[0], user[1]))
+    
+    selectedOption= int(input(" What would you like to do?\n Bank operations:\n 1. Withdrawal\n 2. Cash Deposit\n 3. logout Account \n 4. Exit Bank operations\n "))
+    while(selectedOption == 4):
+        if (selectedOption == 1):
+            print("\nWithdrawal function")
+            withdrawOperation()
+   
+        elif(selectedOption == 2):
+            print("\nDeposit function")
+            depositOperation()
 
-    elif(selectedOption == 3):
-        login()
-    elif (selectedOption ==4):
-        print("Quit Bank Operations\n")
-        exit()
-    else:
-        print("Invalid option")
-        bankOperation( user)
+        elif(selectedOption == 3):
+            print("Logging OUT of your account!")
+            init()
+
+        elif (selectedOption ==4):
+            print("Quit Bank Operations\n")
+            exit()
+        else:
+            print("Invalid option")
+            bankOperation( user)
 
 
 
 
 
 def withdrawOperation():
-    print("How much do you want to withdraw?\n")
+    Amount= int(input("How much do you want to withdraw?\n"))
+    print("Take your cash!!!")
+    
 
 def depositOperation():
-    print("How much do you want to deposit?\n")
+    Amount= int(input("How much do you want to deposit?\n"))
+    print("cash deposited!!!")
 
 
 
@@ -103,12 +131,9 @@ def generateAccountNumber():
     return random.randrange(1111111111,9999999999)
     
 
-
-
 ####ACTUAL BANKING SYSTEM######
 
 init()
-#generateAccountNumber()
 
 
 
